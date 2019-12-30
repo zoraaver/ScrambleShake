@@ -1,8 +1,28 @@
 #board {
-    display: grid;
-    grid-template-columns: repeat(15, 1fr);
-    height: 700px;
-    width: 700px;
+    display: flex;
+    flex-wrap: wrap;
+    width: 750px;
+    height: 750px;
     margin: 0 auto;
-    grid-gap: 0%;
-}
+  }
+  
+  .standard-tile {
+    border: 1px solid white;
+    background-color: rgb(218, 218, 143);
+    flex: 1 1 auto;
+    width: 48px; 
+    height: 50px; 
+  
+  }
+
+  .triple-word {
+    border: 1px solid white;
+    background-color: rgb(202, 68, 51);
+    flex: 1 1 auto;
+    width: 48px; 
+    height: 50px; 
+    text-align: center;
+    font-size: small;
+    font-family: Georgia, 'Times New Roman', Times, serif;
+    vertical-align: middle;
+  }
