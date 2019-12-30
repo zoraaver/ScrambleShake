@@ -1,0 +1,55 @@
+header{
+    
+    word-spacing: 8px;
+    text-align: center;
+    text-shadow: 1px 1px  rgb(2, 85, 81);
+    font-weight: 500;
+    font-family:'Girassol', cursive;    
+    border-style: dotted;
+    border-radius: 30px;
+    border-color: cadetblue;
+}
+
+html {
+    background: url('http://www.desktopwallpaperhd.net/wallpapers/3/1/wallpapers-desktop-random-backgrounds-filter-style-room-high-resolutions-39937.jpg') no-repeat center center fixed;
+    background-size: cover;
+    height: 100%;
+    overflow: hidden;
+  }
+
+.page-font{
+    color: #D6FFE7;
+}
+
+.userform{
+    margin-top: 5px;
+    margin-bottom: 10px;     
+}
+input[type=text] {
+    width: 15%;
+    font-size: 20px;
+    margin: 8px 0; 
+    border: 2px dashed  #D6FFE7;
+    border-radius: 10px;
+    background-color: black;
+}
+
+#submit-user{
+    width: 15%;
+    font-size: 10px;
+    background-color: black;
+    position: relative;
+    bottom: -200px;
+    left: 550px;
+}
+#player-2{
+    position: relative;
+    left: 1050px;
+    bottom:125px;
+}
+
+#player-1{
+    position: relative;
+    left: 30px;
+    bottom:-15px;
+}
