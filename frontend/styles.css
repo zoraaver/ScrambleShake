@@ -50,3 +50,35 @@
     font-family: 'Courier New', Courier, monospace;
     vertical-align: middle;
   }
+
+  .double-letter {
+    border: 1px solid white;
+    background-color: cyan;
+    flex: 1 1 auto;
+    width: 48px; 
+    height: 50px; 
+    text-align: center;
+    font-size: small;
+    font-family: 'Courier New', Courier, monospace;
+    vertical-align: middle;
+  }
+
+  .centre-star {
+    border: 1px solid white;
+    background-color: pink;
+    flex: 1 1 auto;
+    width: 48px; 
+    height: 50px; 
+    text-align: center;
+    font-size: small;
+    font-family: 'Courier New', Courier, monospace;
+    vertical-align: middle;
+  }
+
+.centre-star span {
+    position: relative;
+    height: 30px;
+    width: 30px;
+    vertical-align: middle;
+    font-size: 40px;
+}
