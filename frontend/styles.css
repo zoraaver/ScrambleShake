@@ -5,80 +5,40 @@
     height: 750px;
     margin: 0 auto;
   }
+
+#board div {
+    border: 1px solid white;
+    flex: 1 1 auto;
+    width: 48px; 
+    height: 50px;
+    text-align: center;
+    font-size: small;
+    font-family: 'Courier New', Courier, monospace;
+    line-height: 25px;
+}
+
   
-  .standard-tile {
-    border: 1px solid white;
-    background-color: rgb(218, 218, 143);
-    flex: 1 1 auto;
-    width: 48px; 
-    height: 50px; 
-  
-  }
-
-  .triple-word {
-    border: 1px solid white;
-    background-color: rgb(202, 68, 51);
-    flex: 1 1 auto;
-    width: 48px; 
-    height: 50px; 
-    text-align: center;
-    font-size: small;
-    font-family: Georgia, 'Times New Roman', Times, serif;
-    vertical-align: middle;
-  }
-
-  .triple-letter {
-    border: 1px solid white;
-    background-color: rgb(0, 153, 255);
-    flex: 1 1 auto;
-    width: 48px; 
-    height: 50px; 
-    text-align: center;
-    font-size: small;
-    font-family: 'Courier New', Courier, monospace;
-    vertical-align: middle;
-  }
-
-  .double-word {
-    border: 1px solid white;
-    background-color: pink;
-    flex: 1 1 auto;
-    width: 48px; 
-    height: 50px; 
-    text-align: center;
-    font-size: small;
-    font-family: 'Courier New', Courier, monospace;
-    vertical-align: middle;
-  }
-
-  .double-letter {
-    border: 1px solid white;
-    background-color: cyan;
-    flex: 1 1 auto;
-    width: 48px; 
-    height: 50px; 
-    text-align: center;
-    font-size: small;
-    font-family: 'Courier New', Courier, monospace;
-    vertical-align: middle;
-  }
-
-  .centre-star {
-    border: 1px solid white;
-    background-color: pink;
-    flex: 1 1 auto;
-    width: 48px; 
-    height: 50px; 
-    text-align: center;
-    font-size: small;
-    font-family: 'Courier New', Courier, monospace;
-    vertical-align: middle;
-  }
+.standard-tile {
+  background-color: rgb(218, 218, 143);
+}
+.triple-word {
+  background-color: rgb(202, 68, 51);
+}
+.triple-letter {
+  background-color: rgb(0, 153, 255);
+}
+.double-word {
+  background-color: pink;
+}
+.double-letter {
+  background-color: cyan;
+}
+.centre-star {
+  background-color: pink;
+}
 
 .centre-star span {
-    position: relative;
-    height: 30px;
-    width: 30px;
-    vertical-align: middle;
-    font-size: 40px;
+    height: 40px;
+    width: 40px;
+    font-size: 50px;
 }
