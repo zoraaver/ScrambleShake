@@ -26,3 +26,27 @@
     font-family: Georgia, 'Times New Roman', Times, serif;
     vertical-align: middle;
   }
+
+  .triple-letter {
+    border: 1px solid white;
+    background-color: rgb(0, 153, 255);
+    flex: 1 1 auto;
+    width: 48px; 
+    height: 50px; 
+    text-align: center;
+    font-size: small;
+    font-family: 'Courier New', Courier, monospace;
+    vertical-align: middle;
+  }
+
+  .double-word {
+    border: 1px solid white;
+    background-color: pink;
+    flex: 1 1 auto;
+    width: 48px; 
+    height: 50px; 
+    text-align: center;
+    font-size: small;
+    font-family: 'Courier New', Courier, monospace;
+    vertical-align: middle;
+  }
