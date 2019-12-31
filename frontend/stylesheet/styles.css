@@ -140,3 +140,45 @@ input[type=text] {
     font-size: 30px;
     vertical-align: middle;
 }
+
+
+.table1, .tr1{
+    position: fixed;
+    font-size: 15px;
+    left: 30px;
+    bottom: 550px;
+    border: 20px dashed  #D6FFE7;
+    border-radius: 30px;
+    border-width: medium ;
+    background-color: black;
+}
+
+.stat1btn{
+    position: fixed; 
+    font-size: 13px;
+    left: 30px;
+    bottom: 515px;
+    border: 3px dashed  #D6FFE7;
+    border-radius: 30px;
+    background-color: black; 
+}
+
+.table2, .tr2{
+    position: fixed;
+    font-size: 15px;
+    left: 1270px;
+    bottom: 550px;
+    border: 20px dashed  #D6FFE7;
+    border-radius: 30px;
+    border-width: medium ;
+    background-color: black;
+}
+.stat2btn{
+    position: fixed; 
+    font-size: 13px;
+    left: 1330px;
+    bottom: 515px;
+    border: 3px dashed  #D6FFE7;
+    border-radius: 30px;
+    background-color: black; 
+}
