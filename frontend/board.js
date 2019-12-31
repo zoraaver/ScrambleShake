@@ -1,3 +1,8 @@
+document.addEventListener("DOMContentLoaded", () => {
+    drawBoard();
+    drawDecks();
+});
+
 function drawBoard() {
     const board = document.createElement('div');
     board.id = "board";
@@ -5,8 +10,6 @@ function drawBoard() {
     for(let i = 0; i < 225; i++) {
         const tile = document.createElement('div');
 
-        
-        
         tile.dataset.rowId = Math.floor(i/15) + 1;
         tile.dataset.columnId = i%15 + 1;
 
@@ -67,6 +70,17 @@ function drawBoard() {
         board.append(tile);
     }
     document.querySelector('#board-container').append(board);
-}   
+} 
 
-drawBoard();
+function drawDecks() {
+    const decks = Array.from(document.querySelectorAll(".deck"));
+    decks.forEach(d => {
+        for(let i = 0; i < 7; i++) {
+            const tile = document.createElement('div');
+            d.append(tile);
+            tile.classList.add("standard-tile");
+        }
+        
+    })
+}
+
