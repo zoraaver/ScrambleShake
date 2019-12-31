@@ -79,9 +79,6 @@ input[type=text] {
   flex: 1 1 auto;
   width: 48px; 
   height: 50px;
-}
-
-.filled {
   text-align: center;
   font-size: x-large;
   font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
@@ -89,7 +86,11 @@ input[type=text] {
   position: relative;
 }
 
-.filled span {
+.selected {
+  background-color: royalblue;
+}
+
+.deck span {
   font-size: small;
   position: absolute;
   top: 10px;
