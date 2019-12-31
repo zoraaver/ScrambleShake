@@ -21,6 +21,10 @@ html {
     color: #D6FFE7;
 }
 
+.hidden {
+  display: none;
+}
+
 .userform{
     margin-top: 5px;
     margin-bottom: 10px;     
@@ -55,7 +59,7 @@ input[type=text] {
 }
 
 #board {
-    display: none;
+    display: flex;
     flex-wrap: wrap;
     width: 750px;
     height: 750px;
@@ -96,5 +100,6 @@ input[type=text] {
 .centre-star span {
     height: 40px;
     width: 40px;
-    font-size: 50px;
+    font-size: 30px;
+    vertical-align: middle;
 }

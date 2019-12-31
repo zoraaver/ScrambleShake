@@ -1,7 +1,6 @@
 function drawBoard() {
     const board = document.createElement('div');
     board.id = "board";
-    board.hidden = true; 
     
     for(let i = 0; i < 225; i++) {
         const tile = document.createElement('div');
@@ -67,7 +66,7 @@ function drawBoard() {
         tile.classList.add("empty");
         board.append(tile);
     }
-    document.querySelector('body').append(board);
+    document.querySelector('#board-container').append(board);
 }   
 
 drawBoard();
