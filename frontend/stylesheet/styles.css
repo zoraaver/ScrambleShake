@@ -67,6 +67,7 @@ input[type=text] {
   }
 
 .deck {
+  flex: 1 33%;
   display: flex;
   flex-wrap: wrap;
   width: 350px;
@@ -86,8 +87,27 @@ input[type=text] {
   position: relative;
 }
 
+#board div {
+  border: 1px solid white;
+  flex: 1 1 auto;
+  width: 48px; 
+  height: 50px;
+}
+
 .selected {
-  background-color: royalblue;
+  background-color: rgb(117, 206, 117);
+  text-align: center;
+  font-size: x-large;
+  font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+  line-height: 50px;
+  position: relative;
+}
+
+.selected span {
+  font-size: small;
+  position: absolute;
+  top: 10px;
+  right: 5px;
 }
 
 .deck span {
@@ -97,11 +117,8 @@ input[type=text] {
   right: 5px;
 }
 
-#board div {
-    border: 1px solid white;
-    flex: 1 1 auto;
-    width: 48px; 
-    height: 50px;
+.removed {
+  opacity: 0.5;
 }
 
 .empty {
@@ -123,6 +140,11 @@ input[type=text] {
 .deck-column {
   flex: 1 33%;
   margin: auto;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
+  align-content: center;
 }
 
 .board-column {
@@ -157,42 +179,19 @@ input[type=text] {
 }
 
 
-.table1, .tr1{
-    position: fixed;
-    font-size: 15px;
-    left: 15px;
-    bottom: 550px;
+.table1, .table2{
+    flex: 1 33%;
+    margin: auto;
     border: 20px dashed  #D6FFE7;
     border-radius: 30px;
     border-width: medium ;
     background-color: black;
 }
 
-.stat1btn{
-    position: fixed; 
+.stat1btn, .stat2btn {
+    flex: 1 5%;
+    margin: auto;
     font-size: 13px;
-    left: 15px;
-    bottom: 515px;
-    border: 3px dashed  #D6FFE7;
-    border-radius: 30px;
-    background-color: black; 
-}
-
-.table2, .tr2{
-    position: fixed;
-    font-size: 15px;
-    left: 1270px;
-    bottom: 550px;
-    border: 20px dashed  #D6FFE7;
-    border-radius: 30px;
-    border-width: medium ;
-    background-color: black;
-}
-.stat2btn{
-    position: fixed; 
-    font-size: 13px;
-    left: 1330px;
-    bottom: 515px;
     border: 3px dashed  #D6FFE7;
     border-radius: 30px;
     background-color: black; 
