@@ -1,5 +1,6 @@
 document.addEventListener("DOMContentLoaded", startGame);
 let selectedTile = {selected: false, symbol: "", points: 0, id: 0};
+const placedLetters = [];
 
 function startGame() {
     const letters = createLetterBag();
@@ -71,6 +72,7 @@ function drawBoard() {
         }
 
         tile.classList.add("empty");
+        tile.addEventListener("click", placeTile);
         board.append(tile);
     }
     document.querySelector('#board-container').append(board);
@@ -78,6 +80,18 @@ function drawBoard() {
 
 function randomLetter(letters) {
     return Math.floor(Math.random() * letters.length);
+}
+
+function placeTile(e) {
+    if (!selectedTile.selected) return;
+    this.innerText = selectedTile.symbol;
+    placedLetters.push({type: this.className, row: this.dataset.rowId, column: this.dataset.columnId, deck_id: selectedTile.id});
+    this.className = "selected";
+    const pointSpan = document.createElement("span");
+    pointSpan.innerText = selectedTile.points;
+    this.append(pointSpan);
+    console.log(selectedTile);
+    selectedTile.selected = false;
 }
 
 function drawDecks(letters) {
@@ -117,7 +131,6 @@ function selectTile(e) {
     selectedTile.symbol = this.innerText.charAt(0);
     selectedTile.points = parseInt(this.innerText.slice(1));
     selectedTile.id = this.dataset.deckId;
-    console.log(selectedTile);
     
 }
 

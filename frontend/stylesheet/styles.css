@@ -86,8 +86,27 @@ input[type=text] {
   position: relative;
 }
 
+#board div {
+  border: 1px solid white;
+  flex: 1 1 auto;
+  width: 48px; 
+  height: 50px;
+}
+
 .selected {
-  background-color: royalblue;
+  background-color: rgb(117, 206, 117);
+  text-align: center;
+  font-size: x-large;
+  font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+  line-height: 50px;
+  position: relative;
+}
+
+.selected span {
+  font-size: small;
+  position: absolute;
+  top: 10px;
+  right: 5px;
 }
 
 .deck span {
@@ -95,13 +114,6 @@ input[type=text] {
   position: absolute;
   top: 10px;
   right: 5px;
-}
-
-#board div {
-    border: 1px solid white;
-    flex: 1 1 auto;
-    width: 48px; 
-    height: 50px;
 }
 
 .empty {
