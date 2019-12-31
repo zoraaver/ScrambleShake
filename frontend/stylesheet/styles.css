@@ -75,6 +75,16 @@ input[type=text] {
   margin: 0 auto;
 }
 
+.show-letters {
+  flex: 1 5%;
+  display: flex;
+  border-radius: 25px;
+  flex-wrap: wrap;
+  background-color: green;
+  opacity: 0.9;
+  font-family: monospace;
+}
+
 .deck div {
   border: 1px solid white;
   flex: 1 1 auto;

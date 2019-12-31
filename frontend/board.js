@@ -1,11 +1,28 @@
-document.addEventListener("DOMContentLoaded", startGame);
+document.addEventListener("DOMContentLoaded", (e) => {
+    startGame(e, user1, user2)
+});
+
+const user1 = {name: "John", score: 0};
+const user2 = {name: "Michael", score: 0};
 let selectedTile = {selected: false, symbol: "", points: 0, id: 0};
 const placedLetters = [];
+let turnCount = 0;
+const showButtons = Array.from(document.querySelectorAll(".show-letters"));
+
+showButtons.forEach((s) => s.addEventListener('click', deckToggle));
 
 function startGame(e, user1, user2) {
     const letters = createLetterBag();
     drawBoard();
     drawDecks(letters);
+    playTurn();
+}
+
+function playTurn() {
+    const decks = Array.from(document.querySelectorAll(".deck"));
+    const currentPlayer = turnCount%2 == 0 ? user1 : user2;
+    decks.forEach(d => d.className = "hidden");
+    turnCount ++;
 }
 
 function drawBoard() {
@@ -80,6 +97,11 @@ function drawBoard() {
 
 function randomLetter(letters) {
     return Math.floor(Math.random() * letters.length);
+}
+
+function deckToggle(e) {
+    if (turnCount%2 !== parseInt(this.id.slice(4))) return;
+    this.previousElementSibling.className == "hidden" ? this.previousElementSibling.className = "deck" : this.previousElementSibling.className = "hidden";
 }
 
 function placeTile(e) {
