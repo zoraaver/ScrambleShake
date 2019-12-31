@@ -14,7 +14,7 @@ html {
     background: url('http://www.desktopwallpaperhd.net/wallpapers/3/1/wallpapers-desktop-random-backgrounds-filter-style-room-high-resolutions-39937.jpg') no-repeat center center fixed;
     background-size: cover;
     height: 100%;
-    overflow: hidden;
+    overflow: scroll;
   }
 
 .page-font{
@@ -30,7 +30,7 @@ input[type=text] {
     font-size: 20px;
     margin: 8px 0; 
     border: 2px dashed  #D6FFE7;
-    border-radius: 10px;
+    border-radius: 30px;
     background-color: black;
 }
 
@@ -55,7 +55,7 @@ input[type=text] {
 }
 
 #board {
-    display: flex;
+    display: none;
     flex-wrap: wrap;
     width: 750px;
     height: 750px;
