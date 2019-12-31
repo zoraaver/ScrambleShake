@@ -2,7 +2,7 @@ document.addEventListener("DOMContentLoaded", startGame);
 let selectedTile = {selected: false, symbol: "", points: 0, id: 0};
 const placedLetters = [];
 
-function startGame() {
+function startGame(e, user1, user2) {
     const letters = createLetterBag();
     drawBoard();
     drawDecks(letters);
