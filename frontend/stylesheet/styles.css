@@ -66,6 +66,25 @@ input[type=text] {
     margin: 0 auto;
   }
 
+.deck {
+  display: flex;
+  flex-wrap: wrap;
+  width: 350px;
+  height: 50px;
+  margin: 0 auto;
+}
+
+.deck div {
+  border: 1px solid white;
+  flex: 1 1 auto;
+  width: 48px; 
+  height: 50px;
+  text-align: center;
+  font-size: small;
+  font-family: 'Courier New', Courier, monospace;
+  line-height: 25px;
+}
+
 #board div {
     border: 1px solid white;
     flex: 1 1 auto;
@@ -75,6 +94,24 @@ input[type=text] {
     font-size: small;
     font-family: 'Courier New', Courier, monospace;
     line-height: 25px;
+}
+
+#main-content {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  align-content: center;
+
+}
+
+.deck-column {
+  flex: 1 33%;
+  margin: auto;
+}
+
+.board-column {
+  margin: auto;
 }
 
   
