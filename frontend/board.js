@@ -83,13 +83,42 @@ function randomLetter(letters) {
 }
 
 function placeTile(e) {
+    const previouslyPlaced = placedLetters.find(l => l.row == this.dataset.rowId && l.column == this.dataset.columnId);
+
+    if (previouslyPlaced) {
+        console.log(previouslyPlaced);
+        const deckTile = document.querySelector(`div[data-deck-id="${previouslyPlaced.deck_id}"]`);
+        deckTile.innerText = previouslyPlaced.symbol;
+        const pointsSpan = document.createElement("span");
+        pointsSpan.innerText = previouslyPlaced.points;
+        deckTile.append(pointsSpan)
+        deckTile.className = "standard-tile";
+        this.className = previouslyPlaced.class;
+        this.innerText = previouslyPlaced.text;
+        placedLetters.splice(placedLetters.findIndex(e => e == previouslyPlaced), 1);
+        return;
+    }
     if (!selectedTile.selected) return;
+    placedLetters.push({class: this.className,
+                        row: this.dataset.rowId,
+                        column: this.dataset.columnId,
+                        deck_id: selectedTile.id,
+                        symbol: selectedTile.symbol,
+                        points: selectedTile.points,
+                        text: this.innerText
+                    });
+
     this.innerText = selectedTile.symbol;
-    placedLetters.push({type: this.className, row: this.dataset.rowId, column: this.dataset.columnId, deck_id: selectedTile.id});
     this.className = "selected";
     const pointSpan = document.createElement("span");
     pointSpan.innerText = selectedTile.points;
     this.append(pointSpan);
+
+    const old = document.querySelector(`div[data-deck-id="${selectedTile.id}"]`);
+    old.innerText = "";
+    old.classList.remove("selected");
+    old.classList.add("removed");
+    console.log(old);
     console.log(selectedTile);
     selectedTile.selected = false;
 }
@@ -97,6 +126,7 @@ function placeTile(e) {
 function drawDecks(letters) {
     const decks = Array.from(document.querySelectorAll(".deck"));
     decks.forEach((d, index) => {
+        d.innerHTML = "";
         for(let i = 0; i < 7; i++) {
             const letter = letters.splice(randomLetter(letters), 1)[0];
 
@@ -110,17 +140,16 @@ function drawDecks(letters) {
             tile.classList.add("standard-tile");
             tile.addEventListener('click', selectTile);
             d.append(tile);
-        }
-        
+        } 
     })
 }
 
 function selectTile(e) {
     
- 
+    if (this.className == "removed") return;
     const old = document.querySelector(`div[data-deck-id="${selectedTile.id}"]`);
 
-    if (old) {
+    if (old && old.dataset.deckId == this.dataset.deckId) {
         old.classList.remove("selected");
         old.classList.add("standard-tile");
     }

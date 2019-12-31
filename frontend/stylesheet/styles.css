@@ -116,6 +116,10 @@ input[type=text] {
   right: 5px;
 }
 
+.removed {
+  opacity: 0.5;
+}
+
 .empty {
   text-align: center;
   font-size: small;
