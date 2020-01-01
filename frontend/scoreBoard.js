@@ -7,7 +7,7 @@ document.addEventListener("DOMContentLoaded", () => {
     table1.id = 'user1-board';
 
     let tr = document.createElement('tr');
-    tr.classList.add('page-fond', 'tr1');
+    tr.classList.add('page-font', 'tr1');
 
     let th1 = document.createElement('th');
     let th2 = document.createElement('th');
@@ -37,7 +37,7 @@ document.addEventListener("DOMContentLoaded", () => {
     table2.id = 'user2-board';
 
     let tr2 = document.createElement('tr');
-    tr2.classList.add('page-fond', 'tr2');
+    tr2.classList.add('page-font', 'tr2');
 
     let thX = document.createElement('th');
     let thY = document.createElement('th');
