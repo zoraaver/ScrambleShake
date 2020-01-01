@@ -35,9 +35,7 @@ html {
   height: 300px;
 }
 
-#sign-in-form>div{
 
-}
 input[type=text] {
     width: auto;
     font-size: 20px;
@@ -51,6 +49,14 @@ input[type=text] {
   width: auto;
   font-size: 17px;
   background-color: black;
+}
+
+input[readonly]{
+  background-color: rgb(188, 181, 192);
+}
+
+.readonly{
+  color: crimson;
 }
 
 #submit-user{

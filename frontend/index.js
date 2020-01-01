@@ -36,6 +36,9 @@ document.addEventListener("DOMContentLoaded", (e) => {
                 const game = document.querySelector('#submit-user');
                 game.classList.remove('hidden');
             };
+            readyOne.disabled = true;
+            user1Email.readOnly = true;
+            user1Name.readOnly = true; 
         })
     });
 
@@ -60,7 +63,10 @@ document.addEventListener("DOMContentLoaded", (e) => {
                 const game = document.querySelector('#submit-user');
                 game.classList.remove('hidden');
             };
-        });
+            readyTwo.disabled = true; 
+            user2Email.readOnly = true;
+            user2Name.readOnly = true; 
+        })
 
 
     });
