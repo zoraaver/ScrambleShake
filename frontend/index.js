@@ -67,10 +67,5 @@ document.addEventListener("DOMContentLoaded", (e) => {
             user2Email.readOnly = true;
             user2Name.readOnly = true; 
         })
-
-
     });
-
-
-
 })
