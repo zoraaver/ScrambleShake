@@ -113,7 +113,6 @@ function deckToggle(e) {
 }
 
 function validMove(tileDiv) {
-    console.log(tileDiv);
     if (placedLetters.length === 0) return true;
 
     if (placedLetters.length === 1) {
@@ -127,9 +126,9 @@ function validMove(tileDiv) {
         } else return false;
     } 
     else if (placedLetters.length > 1) {
-        if (rowPlaced && tileDiv.dataset.rowId !== placedLetters[placedLetters.length - 1])
+        if (rowPlaced && tileDiv.dataset.rowId !== placedLetters[placedLetters.length - 1].row)
             return false;
-        else if (columnPlaced && tileDiv.dataset.columnId !== placedLetters[placedLetters.length - 1])
+        else if (columnPlaced && tileDiv.dataset.columnId !== placedLetters[placedLetters.length - 1].column)
             return false;
         else return true;
     }
