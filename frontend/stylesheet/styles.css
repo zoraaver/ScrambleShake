@@ -55,10 +55,6 @@ input[readonly]{
   background-color: rgb(188, 181, 192);
 }
 
-.readonly{
-  color: crimson;
-}
-
 #submit-user{
     width: 15%;
     font-size: 10px;
@@ -66,18 +62,6 @@ input[readonly]{
     margin-left: 600px;
     margin-top: 60px;
 }
-
-/*#player-2{
-    position: relative;
-    left: 1180px;
-    bottom:165px;
-}
-
-#player-1{
-    position: relative;
-    left: 30px;
-    bottom:-15px;
-}*/
 
 #board {
     display: flex;
