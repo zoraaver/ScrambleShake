@@ -27,8 +27,52 @@ stat1btn.classList.add('page-font', 'stat1btn');
 stat1btn.innerText = 'Your Stats';
 stat1btn.type = 'submit'; 
 
-
 deck1.append(table1, stat1btn); 
+
+stat1btn.addEventListener ('click', (e) =>{
+    e.preventDefault(); 
+    let el = document.querySelector('#player1Stats');
+    
+    if (el){
+        if (el.classList.value === 'hidden'){
+            el.classList.remove('hidden')
+        } else {
+            el.classList.add('hidden');
+        }
+    } else {
+        deck1.append(showStats(player1)); 
+        let el = document.querySelector('#player1Stats');
+        el.classList.remove('hidden'); 
+    }
+
+})
+
+// // user show of stats
+function showStats(player){
+    let div = document.createElement('div');
+    div.id = 'player1Stats'; 
+    div.classList.add('hidden');
+
+    let gameCount = player.games.length;
+
+    let totalGame = document.createElement('h3');
+    totalGame.innerText = `${player.name} has played ${gameCount} games.`;
+    totalGame.classList.add ('page-font');
+
+    let getSum = (memo, current) => memo + current; 
+    let scoreAry = ()=>{
+        return player.games.map (game => {
+            return game.score;
+        })
+    };
+
+    let totalScore = document.createElement('h3'); 
+    totalScore.innerText = `You've scored ${scoreAry().reduce(getSum, 0)} points.`;
+    totalScore.classList.add ('page-font'); 
+
+    div.append(totalGame, totalScore);
+    return div; 
+}
 
 // user_2 score display board
 let deck2 = document.querySelector("#deck-column2");
@@ -62,4 +106,21 @@ stat2btn.type = 'submit';
 
 deck2.append(table2, stat2btn); 
 
+stat2btn.addEventListener ('click', (e) =>{
+    e.preventDefault(); 
+    let el = document.querySelector('#player2Stats');
+    
+    if (el){
+        if (el.classList.value === 'hidden'){
+            el.classList.remove('hidden')
+        } else {
+            el.classList.add('hidden');
+        }
+    } else {
+        deck2.append(showStats(player2)); 
+        let el = document.querySelector('#player1Stats');
+        el.id = 'player2Stats';
+        el.classList.remove('hidden'); 
+    }
 
+})
