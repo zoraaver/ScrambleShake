@@ -14,9 +14,9 @@ document.addEventListener("DOMContentLoaded", () => {
         gamePage.classList.remove("hidden");
 
         const name1 = document.querySelector('#player1-name');
-        name1.innerText = `Player 1: ${player1.name}`;
+        name1.innerText = `${player1.name}'s score: `;
 
         const name2 = document.querySelector('#player2-name');
-        name2.innerText = `Player 2: ${player2.name}`;
+        name2.innerText = `${player2.name}'s score: `;
     }
 })

@@ -192,7 +192,7 @@ input[readonly]{
 .deck-column h2 {
   flex: 1 10%;
   margin: auto;
-  color: red;
+  color: green;
 }
 
 .board-column {
@@ -228,7 +228,7 @@ input[readonly]{
 
 
 .table1, .table2{
-    flex: 1 33%;
+    flex: 1 40%;
     margin-top: 10px;
     border: 20px dashed  #D6FFE7;
     border-radius: 30px;
@@ -237,7 +237,7 @@ input[readonly]{
 }
 
 .stat1btn, .stat2btn {
-    flex: 1 5%;
+    flex: 1 8%;
     margin-top: 10px;
     font-size: 13px;
     border: 3px dashed  #D6FFE7;
