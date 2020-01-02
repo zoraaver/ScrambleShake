@@ -121,7 +121,14 @@ function fourTiles(tileDiv) {
     const down = document.querySelector(`div[data-row-id="${parseInt(tileDiv.dataset.rowId) + 1}"][data-column-id="${parseInt(tileDiv.dataset.columnId)}"]`);
     const right = document.querySelector(`div[data-column-id="${parseInt(tileDiv.dataset.columnId) + 1}"][data-row-id="${parseInt(tileDiv.dataset.rowId)}"]`);
     const left = document.querySelector(`div[data-column-id="${parseInt(tileDiv.dataset.columnId) - 1}"][data-row-id="${parseInt(tileDiv.dataset.rowId)}"]`);
+    const tiles = [up, down, left, right];
     
+    return tiles;
+}
+
+function testSurroundingTiles(tiles) {
+    [up, down, left, right] = tiles;
+
     if ((left && (left.className === "selected" || left.className === "placed")) ||
         (right && (right.className === "selected" || right.className === "placed")) ||
         (up && (up.className === "selected" ||  up.className === "placed")) ||
@@ -134,17 +141,24 @@ function validMove(tileDiv) {
     
     if (placedLetters.length === 0){
         if (parseInt(tileDiv.dataset.rowId) === 8 && parseInt(tileDiv.dataset.columnId) === 8 && turnCount === 1) return true;
-        else if (turnCount > 1 && fourTiles(tileDiv)) return true;
+        else if (turnCount > 1 && testSurroundingTiles(fourTiles(tileDiv))) {
+            const surroundingTiles = fourTiles(tileDiv);
+            if (surroundingTiles[0].className === "placed" || surroundingTiles[1].className === "placed") columnPlaced = true;
+            else [rowPlaced, columnPlaced] = [true, false];
+            return true;
+        }
     }
     
-    if (!fourTiles(tileDiv)) return false;
+    if (!testSurroundingTiles(fourTiles(tileDiv))) return false;
     if (placedLetters.length === 1) {
         
         if (tileDiv.dataset.rowId === placedLetters[0].row) {
             rowPlaced = true;
+            columnPlaced = false;
             return true;
         } else if (tileDiv.dataset.columnId === placedLetters[0].column) {
             columnPlaced = true;
+            rowPlaced = false;
             return true;
         } else return false;
     } 
@@ -219,44 +233,127 @@ function tileScore(tileDiv, score, axis = true) {
     if (tileDiv.className === "selected") { 
         const p = placedLetters.find(l => l.row == tileDiv.dataset.rowId && l.column == tileDiv.dataset.columnId);
         const type = p.class;
-        score.axis_points += tilePoints;
-        if (type.includes("triple-letter"))
-            score.axis_points += 2*tilePoints;
-        else if (type.includes("double-letter"))
-            score.axis_points += tilePoints;
+        if (axis) score.axis_points += tilePoints;
+        else score.off_axis_points += tilePoints;
+        if (type.includes("triple-letter")){
+            if (axis) score.axis_points += 2*tilePoints;
+            else score.off_axis_points += 2*tilePoints;
+        }
+        else if (type.includes("double-letter")){
+            if (axis) score.axis_points += tilePoints;
+            else score.off_axis_points += tilePoints;
+        }
         else if (type.includes("double-word"))
-            score.double_word_count += 1;
+            if (axis) score.double_word_count += 1;
         else if (type.includes("triple-word"))
-            score.triple_word_count += 1;
+            if (axis) score.triple_word_count += 1;
     } else if (tileDiv.className === "placed") {
-        score.axis_points += tilePoints;
+        if (axis) score.axis_points += tilePoints;
+        else score.off_axis_points += tilePoints;
     }
 }
 
 function calculateScore() {
+    
     const axis_score = {triple_word_count: 0, double_word_count: 0, axis_points: 0, off_axis_points: 0};
-    if (rowPlaced || placedLetters.length > 0) {
-        const l = placedLetters[0];
-        let f = document.querySelector(`div[data-row-id="${parseInt(l.row)}"][data-column-id="${parseInt(l.column)}"]`)
-        
-        
-        let i = parseInt(l.column) - 1;
-        while(f && (f.className === "selected" || f.className === "placed")) { // iterate through tiles to left of first placed tile
-            tileScore(f, axis_score);
-            f = document.querySelector(`div[data-row-id="${l.row}"][data-column-id="${i}"]`);
-            i--;
-        }
-        f = document.querySelector(`div[data-row-id="${l.row}"][data-column-id="${parseInt(l.column) + 1}"]`)
-        i = parseInt(l.column) + 1;
-        
-        while(f && (f.className === "selected" || f.className === "placed")) { // iterate through tiles to right of first placed tile
-            i++;
-            tileScore(f, axis_score)
+    if (placedLetters.length === 0) return axis_score;
 
-            f = document.querySelector(`div[data-row-id="${l.row}"][data-column-id="${i}"]`);
-        }
+    const l = placedLetters[0];
+    let f = document.querySelector(`div[data-row-id="${parseInt(l.row)}"][data-column-id="${parseInt(l.column)}"]`)
+    
+    let i = rowPlaced? parseInt(l.column) - 1 : parseInt(l.row) - 1;
 
+    while(f && (f.className === "selected" || f.className === "placed")) { // iterate through tiles to left of first placed tile
+        
+        if (rowPlaced)
+            f = document.querySelector(`div[data-row-id="${l.row}"][data-column-id="${i}"]`);
+        else 
+            f = document.querySelector(`div[data-row-id="${i}"][data-column-id="${l.column}"]`);
+        
+        if (f.className === "selected") {
+            let g = f;
+            let j = parseInt(rowPlaced? f.dataset.rowId : f.dataset.columnId);
+            let offTiles = 0;
+            
+            while (g && (g.className === "selected" || g.className === "placed")) { 
+                j--;
+                if (!rowPlaced)
+                    g = document.querySelector(`div[data-row-id="${i}"][data-column-id="${j}"]`);
+                else 
+                    g = document.querySelector(`div[data-row-id="${j}"][data-column-id="${i}"]`);
+                tileScore(g, axis_score, false);
+                offTiles++;
+            }
+
+            g = f;
+            j = parseInt(rowPlaced? f.dataset.rowId : f.dataset.columnId);
+
+            while (g && (g.className === "selected" || g.className === "placed")) {
+                j++;
+                if (!rowPlaced)
+                    g = document.querySelector(`div[data-row-id="${i}"][data-column-id="${j}"]`);
+                else {
+                    g = document.querySelector(`div[data-row-id="${j}"][data-column-id="${i}"]`);
+                }
+                tileScore(g, axis_score, false)
+                offTiles++;
+            }
+
+            if (offTiles > 2) tileScore(f, axis_score, false);
+        }
+        tileScore(f, axis_score);
+        i--;
     }
+
+    f = document.querySelector(`div[data-row-id="${l.row}"][data-column-id="${parseInt(l.column)}"]`)
+    i = rowPlaced? parseInt(l.column): parseInt(l.row);
+    
+    while(f && (f.className === "selected" || f.className === "placed")) { // iterate through tiles to right of first placed tile
+        
+        if (rowPlaced)
+            f = document.querySelector(`div[data-row-id="${l.row}"][data-column-id="${i}"]`);
+        else {
+            f = document.querySelector(`div[data-row-id="${i}"][data-column-id="${l.column}"]`);
+        }
+
+        if (f.className === "selected") {
+            let g = f;
+            let j = parseInt(rowPlaced? f.dataset.rowId : f.dataset.columnId);
+            let offTiles = 0;
+            
+            while (g && (g.className === "selected" || g.className === "placed")) { 
+                j--;
+                if (!rowPlaced)
+                    g = document.querySelector(`div[data-row-id="${i}"][data-column-id="${j}"]`);
+                else 
+                    g = document.querySelector(`div[data-row-id="${j}"][data-column-id="${i}"]`);
+                tileScore(g, axis_score, false);
+                offTiles++;
+            
+            }
+
+            g = f;
+            j = parseInt(rowPlaced? f.dataset.rowId : f.dataset.columnId);
+
+            while (g && (g.className === "selected" || g.className === "placed")) {
+                j++;
+                if (!rowPlaced)
+                    g = document.querySelector(`div[data-row-id="${i}"][data-column-id="${j}"]`);
+                else {
+                    g = document.querySelector(`div[data-row-id="${j}"][data-column-id="${i}"]`);
+                }
+                tileScore(g, axis_score, false)
+                offTiles++;
+
+            }
+
+            if (offTiles > 2) tileScore(f, axis_score, false);
+        }
+        tileScore(f, axis_score)
+        i++;
+    }
+
+    
     console.log(axis_score);
 }
 
