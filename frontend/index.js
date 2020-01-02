@@ -27,6 +27,16 @@ document.addEventListener("DOMContentLoaded", (e) => {
         }
     };
 
+    function validateEmail(mail) {
+        if (/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(mail.value)){
+            return true
+        } else {
+            alert("You have entered an invalid email address!")
+            return false
+        }
+    }
+
+
     readyOne.addEventListener('click', (e)=>{
         e.preventDefault();
         configObj = {
@@ -42,18 +52,20 @@ document.addEventListener("DOMContentLoaded", (e) => {
         };
 
         if (validateForm(user1Name, user1Email)){
-            fetch('http://localhost:3000/users', configObj)
-            .then(response => response.json())
-            .then(obj => {
-                player1 = obj;
-                if (player1 && player2) {
-                    const game = document.querySelector('#submit-user');
-                    game.classList.remove('hidden');
-                };
-                readyOne.disabled = true;
-                user1Email.readOnly = true;
-                user1Name.readOnly = true; 
-            })
+            if (validateEmail(user1Email)){
+                fetch('http://localhost:3000/users', configObj)
+                .then(response => response.json())
+                .then(obj => {
+                    player1 = obj;
+                    if (player1 && player2) {
+                        const game = document.querySelector('#submit-user');
+                        game.classList.remove('hidden');
+                    };
+                    readyOne.disabled = true;
+                    user1Email.readOnly = true;
+                    user1Name.readOnly = true; 
+                })
+            } 
         }
        
     });
@@ -72,19 +84,21 @@ document.addEventListener("DOMContentLoaded", (e) => {
             })
         };
 
-        if(validateForm (user2Name, user2Email)){
-            fetch('http://localhost:3000/users', configObj)
-            .then(response => response.json())
-            .then(obj => {
-                player2 = obj;
-                if (player1 && player2) {
-                    const game = document.querySelector('#submit-user');
-                    game.classList.remove('hidden');
-                };
-                readyTwo.disabled = true; 
-                user2Email.readOnly = true;
-                user2Name.readOnly = true; 
-            });
+        if (validateForm (user2Name, user2Email)){
+            if (validateEmail (user2Email)){
+                fetch('http://localhost:3000/users', configObj)
+                .then(response => response.json())
+                .then(obj => {
+                    player2 = obj;
+                    if (player1 && player2) {
+                        const game = document.querySelector('#submit-user');
+                        game.classList.remove('hidden');
+                    };
+                    readyTwo.disabled = true; 
+                    user2Email.readOnly = true;
+                    user2Name.readOnly = true; 
+                });
+            }
         }     
     });
 });
