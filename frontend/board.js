@@ -10,11 +10,13 @@ let columnPlaced = false;
 const placedLetters = [];
 let turnCount = 0;
 const showButtons = Array.from(document.querySelectorAll(".show-letters"));
+const playWord = Array.from(document.querySelectorAll("button.submit"));
 
 showButtons.forEach((s) => s.addEventListener('click', deckToggle));
+playWord.forEach(b => b.addEventListener('click', placeWord));
 
 function startGame(e, user1, user2) {
-    const letters = createLetterBag();
+    letters = createLetterBag();
     drawBoard();
     drawDecks(letters);
     playTurn();
@@ -23,6 +25,7 @@ function startGame(e, user1, user2) {
 function playTurn() {
     const decks = Array.from(document.querySelectorAll(".deck"));
     const currentPlayer = turnCount%2 == 0 ? user1 : user2;
+    showButtons.forEach(s => s.innerText = "Show Letters");
     decks.forEach(d => d.className = "hidden");
     turnCount ++;
 }
@@ -102,6 +105,7 @@ function randomLetter(letters) {
 }
 
 function deckToggle(e) {
+    
     if (turnCount%2 !== parseInt(this.id.slice(4))) return;
     if (this.previousElementSibling.className == "hidden") {
         this.previousElementSibling.className = "deck";
@@ -112,9 +116,28 @@ function deckToggle(e) {
     }
 }
 
-function validMove(tileDiv) {
-    if (placedLetters.length === 0) return true;
+function fourTiles(tileDiv) {
+    const up = document.querySelector(`div[data-row-id="${parseInt(tileDiv.dataset.rowId) - 1}"][data-column-id="${parseInt(tileDiv.dataset.columnId)}"]`);
+    const down = document.querySelector(`div[data-row-id="${parseInt(tileDiv.dataset.rowId) + 1}"][data-column-id="${parseInt(tileDiv.dataset.columnId)}"]`);
+    const right = document.querySelector(`div[data-column-id="${parseInt(tileDiv.dataset.columnId) + 1}"][data-row-id="${parseInt(tileDiv.dataset.rowId)}"]`);
+    const left = document.querySelector(`div[data-column-id="${parseInt(tileDiv.dataset.columnId) - 1}"][data-row-id="${parseInt(tileDiv.dataset.rowId)}"]`);
+    
+    if ((left && (left.className === "selected" || left.className === "placed")) ||
+        (right && (right.className === "selected" || right.className === "placed")) ||
+        (up && (up.className === "selected" ||  up.className === "placed")) ||
+        (down && (down.className === "selected" || down.className === "placed")))
+        return true;
+    else return false;
+}
 
+function validMove(tileDiv) {
+    
+    if (placedLetters.length === 0){
+        if (parseInt(tileDiv.dataset.rowId) === 8 && parseInt(tileDiv.dataset.columnId) === 8 && turnCount === 1) return true;
+        else if (turnCount > 1 && fourTiles(tileDiv)) return true;
+    }
+    
+    if (!fourTiles(tileDiv)) return false;
     if (placedLetters.length === 1) {
         
         if (tileDiv.dataset.rowId === placedLetters[0].row) {
@@ -134,6 +157,16 @@ function validMove(tileDiv) {
     }
 }
 
+function placeWord(e) {
+    const move = Array.from(document.querySelectorAll("#board .selected"));
+    move.forEach(m => m.className = "placed");
+    selectedTile = {selected: false, symbol: "", points: 0, id: 0};
+    rowPlaced = false;
+    columnPlaced = false;
+    placedLetters.length = 0;
+    fillDecks();
+    playTurn();
+}
 function placeTile(e) {
     const previouslyPlaced = placedLetters.find(l => l.row == this.dataset.rowId && l.column == this.dataset.columnId);
     
@@ -147,7 +180,9 @@ function placeTile(e) {
         this.className = previouslyPlaced.class;
         this.innerText = previouslyPlaced.text;
         placedLetters.splice(placedLetters.findIndex(e => e == previouslyPlaced), 1);
+        selectedTile = {selected: false, symbol: "", points: 0, id: 0};
         if (placedLetters.length <= 1) [rowPlaced, columnPlaced] = [false, false];
+        calculateScore();
         return;
     }
 
@@ -175,6 +210,70 @@ function placeTile(e) {
     old.classList.remove("selected");
     old.classList.add("removed");
     selectedTile.selected = false;
+    calculateScore();
+}
+
+function tileScore(tileDiv, score, axis = true) {
+    const tilePoints = parseInt(tileDiv.innerText.slice(1));
+    
+    if (tileDiv.className === "selected") { 
+        const p = placedLetters.find(l => l.row == tileDiv.dataset.rowId && l.column == tileDiv.dataset.columnId);
+        const type = p.class;
+        score.axis_points += tilePoints;
+        if (type.includes("triple-letter"))
+            score.axis_points += 2*tilePoints;
+        else if (type.includes("double-letter"))
+            score.axis_points += tilePoints;
+        else if (type.includes("double-word"))
+            score.double_word_count += 1;
+        else if (type.includes("triple-word"))
+            score.triple_word_count += 1;
+    } else if (tileDiv.className === "placed") {
+        score.axis_points += tilePoints;
+    }
+}
+
+function calculateScore() {
+    const axis_score = {triple_word_count: 0, double_word_count: 0, axis_points: 0, off_axis_points: 0};
+    if (rowPlaced || placedLetters.length > 0) {
+        const l = placedLetters[0];
+        let f = document.querySelector(`div[data-row-id="${parseInt(l.row)}"][data-column-id="${parseInt(l.column)}"]`)
+        
+        
+        let i = parseInt(l.column) - 1;
+        while(f && (f.className === "selected" || f.className === "placed")) { // iterate through tiles to left of first placed tile
+            tileScore(f, axis_score);
+            f = document.querySelector(`div[data-row-id="${l.row}"][data-column-id="${i}"]`);
+            i--;
+        }
+        f = document.querySelector(`div[data-row-id="${l.row}"][data-column-id="${parseInt(l.column) + 1}"]`)
+        i = parseInt(l.column) + 1;
+        
+        while(f && (f.className === "selected" || f.className === "placed")) { // iterate through tiles to right of first placed tile
+            i++;
+            tileScore(f, axis_score)
+
+            f = document.querySelector(`div[data-row-id="${l.row}"][data-column-id="${i}"]`);
+        }
+
+    }
+    console.log(axis_score);
+}
+
+function fillDecks() {
+    const removedTiles = Array.from(document.querySelectorAll(".removed"));
+    removedTiles.forEach(tile => {
+        const letter = letters.splice(randomLetter(letters), 1)[0];
+        
+
+        const pointSpan = document.createElement("span");
+        pointSpan.innerText = letter.points;
+        
+        tile.innerText = letter.sybmol;
+        tile.classList.add("standard-tile");
+        tile.classList.remove("removed");
+        tile.append(pointSpan);
+    })
 }
 
 function drawDecks(letters) {
@@ -203,11 +302,13 @@ function selectTile(e) {
     if (this.className == "removed") return;
     const old = document.querySelector(`div[data-deck-id="${selectedTile.id}"]`);
 
-    if (old && old.dataset.deckId == this.dataset.deckId) {
+    if (old && old.className !== "removed") {
         old.classList.remove("selected");
         old.classList.add("standard-tile");
-        selectedTile = {selected: false, symbol: "", points: 0, id: 0};
-        return;
+        if (old.dataset.deckId == this.dataset.deckId){ 
+           selectedTile = {selected: false, symbol: "", points: 0, id: 0};
+           return;
+        }
     }
     
     this.classList.remove("standard-tile")
