@@ -18,8 +18,6 @@ class UsersController < ApplicationController
         if !user
             if params[:name] != '' && params[:email] !=''
                 user = User.create(name: params[:name], email: params[:email])
-            else
-                flash[:alert] = "Please Fill In Username and Email"
             end 
         end
         render json: user.to_json(include: {
