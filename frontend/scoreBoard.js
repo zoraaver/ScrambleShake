@@ -41,7 +41,8 @@ stat1btn.addEventListener ('click', (e) =>{
         }
     } else {
         deck1.append(showStats(player1)); 
-        let el = document.querySelector('#player1Stats');
+        let el = document.querySelector('#playerStats');
+        el.id = 'player1Stats';
         el.classList.remove('hidden'); 
     }
 
@@ -50,7 +51,7 @@ stat1btn.addEventListener ('click', (e) =>{
 // // user show of stats
 function showStats(player){
     let div = document.createElement('div');
-    div.id = 'player1Stats'; 
+    div.id = 'playerStats'; 
     div.classList.add('hidden');
 
     let gameCount = player.games.length;
@@ -118,9 +119,8 @@ stat2btn.addEventListener ('click', (e) =>{
         }
     } else {
         deck2.append(showStats(player2)); 
-        let el = document.querySelector('#player1Stats');
+        let el = document.querySelector('#playerStats');
         el.id = 'player2Stats';
         el.classList.remove('hidden'); 
     }
-
 })
