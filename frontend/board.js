@@ -104,6 +104,17 @@ function randomLetter(letters) {
     return Math.floor(Math.random() * letters.length);
 }
 
+function updateScore() {
+    const score = calculateScore();
+    const firstScore = document.querySelector("#user-1-points");
+    const secondScore = document.querySelector("#user-2-points");
+
+    if (turnCount%2 === 1) {
+        firstScore.innerText = `Your word scores ${score} points`;
+    } else secondScore.innerText = `Your word scores ${score} points`;
+    
+}
+
 function deckToggle(e) {
     
     if (turnCount%2 !== parseInt(this.id.slice(4))) return;
@@ -178,6 +189,10 @@ function placeWord(e) {
     rowPlaced = false;
     columnPlaced = false;
     placedLetters.length = 0;
+    const firstScore = document.querySelector("#user-1-points");
+    const secondScore = document.querySelector("#user-2-points");
+    firstScore.innerText = "";
+    secondScore.innerText = "";
     fillDecks();
     playTurn();
 }
@@ -196,7 +211,7 @@ function placeTile(e) {
         placedLetters.splice(placedLetters.findIndex(e => e == previouslyPlaced), 1);
         selectedTile = {selected: false, symbol: "", points: 0, id: 0};
         if (placedLetters.length <= 1) [rowPlaced, columnPlaced] = [false, false];
-        calculateScore();
+        updateScore();
         return;
     }
 
@@ -224,7 +239,7 @@ function placeTile(e) {
     old.classList.remove("selected");
     old.classList.add("removed");
     selectedTile.selected = false;
-    calculateScore();
+    updateScore();
 }
 
 function tileScore(tileDiv, score, axis = true) {
