@@ -12,4 +12,20 @@ class UsersController < ApplicationController
             user_games: {only: :winner}
         }, except: [:created_at, :updated_at])
     end
+
+    def create
+        user = User.find_by(email: params[:email])
+        if !user
+            if params[:name] != '' && params[:email] !=''
+                user = User.create(name: params[:name], email: params[:email])
+            else
+                flash[:alert] = "Please Fill In Username and Email"
+            end 
+        end
+        render json: user.to_json(include: {
+            games: {except: [:created_at, :updated_at]},
+            user_games: {only: :winner}
+        }, except: [:created_at, :updated_at])
+    end
+   
 end

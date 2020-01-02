@@ -5,6 +5,8 @@ document.addEventListener("DOMContentLoaded", (e) => {
 const user1 = {name: "John", score: 0};
 const user2 = {name: "Michael", score: 0};
 let selectedTile = {selected: false, symbol: "", points: 0, id: 0};
+let rowPlaced = false;
+let columnPlaced = false;
 const placedLetters = [];
 let turnCount = 0;
 const showButtons = Array.from(document.querySelectorAll(".show-letters"));
@@ -101,14 +103,41 @@ function randomLetter(letters) {
 
 function deckToggle(e) {
     if (turnCount%2 !== parseInt(this.id.slice(4))) return;
-    this.previousElementSibling.className == "hidden" ? this.previousElementSibling.className = "deck" : this.previousElementSibling.className = "hidden";
+    if (this.previousElementSibling.className == "hidden") {
+        this.previousElementSibling.className = "deck";
+        this.innerText = "Hide letters";
+    } else {
+        this.previousElementSibling.className = "hidden";
+        this.innerText = "Show letters";
+    }
+}
+
+function validMove(tileDiv) {
+    if (placedLetters.length === 0) return true;
+
+    if (placedLetters.length === 1) {
+        
+        if (tileDiv.dataset.rowId === placedLetters[0].row) {
+            rowPlaced = true;
+            return true;
+        } else if (tileDiv.dataset.columnId === placedLetters[0].column) {
+            columnPlaced = true;
+            return true;
+        } else return false;
+    } 
+    else if (placedLetters.length > 1) {
+        if (rowPlaced && tileDiv.dataset.rowId !== placedLetters[placedLetters.length - 1].row)
+            return false;
+        else if (columnPlaced && tileDiv.dataset.columnId !== placedLetters[placedLetters.length - 1].column)
+            return false;
+        else return true;
+    }
 }
 
 function placeTile(e) {
     const previouslyPlaced = placedLetters.find(l => l.row == this.dataset.rowId && l.column == this.dataset.columnId);
-
+    
     if (previouslyPlaced) {
-        console.log(previouslyPlaced);
         const deckTile = document.querySelector(`div[data-deck-id="${previouslyPlaced.deck_id}"]`);
         deckTile.innerText = previouslyPlaced.symbol;
         const pointsSpan = document.createElement("span");
@@ -118,9 +147,14 @@ function placeTile(e) {
         this.className = previouslyPlaced.class;
         this.innerText = previouslyPlaced.text;
         placedLetters.splice(placedLetters.findIndex(e => e == previouslyPlaced), 1);
+        if (placedLetters.length <= 1) [rowPlaced, columnPlaced] = [false, false];
         return;
     }
+
     if (!selectedTile.selected) return;
+    if (!validMove(this)) return;
+    
+
     placedLetters.push({class: this.className,
                         row: this.dataset.rowId,
                         column: this.dataset.columnId,
@@ -140,8 +174,6 @@ function placeTile(e) {
     old.innerText = "";
     old.classList.remove("selected");
     old.classList.add("removed");
-    console.log(old);
-    console.log(selectedTile);
     selectedTile.selected = false;
 }
 
@@ -174,6 +206,8 @@ function selectTile(e) {
     if (old && old.dataset.deckId == this.dataset.deckId) {
         old.classList.remove("selected");
         old.classList.add("standard-tile");
+        selectedTile = {selected: false, symbol: "", points: 0, id: 0};
+        return;
     }
     
     this.classList.remove("standard-tile")
@@ -286,8 +320,8 @@ function createLetterBag() {
         {sybmol: "Y", points: 4},
         {sybmol: "Y", points: 4},
         {sybmol: "Z", points: 10},
-        {sybmol: "", points: 0},
-        {sybmol: "", points: 0}
+        {sybmol: "*", points: 0},
+        {sybmol: "*", points: 0}
         
     ];
     return letters;
