@@ -185,6 +185,7 @@ function validMove(tileDiv) {
 }
 
 function placeWord(e) {
+    if (placedLetters.length === 0) return;
     const score = calculateScore();
     const move = Array.from(document.querySelectorAll("#board .selected"));
     move.forEach(m => m.className = "placed");
