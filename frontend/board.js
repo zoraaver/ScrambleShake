@@ -228,25 +228,31 @@ function placeTile(e) {
 }
 
 function tileScore(tileDiv, score, axis = true) {
+    if (!tileDiv) return;
     const tilePoints = parseInt(tileDiv.innerText.slice(1));
     
     if (tileDiv.className === "selected") { 
         const p = placedLetters.find(l => l.row == tileDiv.dataset.rowId && l.column == tileDiv.dataset.columnId);
         const type = p.class;
+
         if (axis) score.axis_points += tilePoints;
         else score.off_axis_points += tilePoints;
-        if (type.includes("triple-letter")){
+
+        if (type === "triple-letter empty"){
             if (axis) score.axis_points += 2*tilePoints;
             else score.off_axis_points += 2*tilePoints;
         }
-        else if (type.includes("double-letter")){
+        else if (type === "double-letter empty") {
             if (axis) score.axis_points += tilePoints;
             else score.off_axis_points += tilePoints;
         }
-        else if (type.includes("double-word"))
+        else if (type === "double-word empty") {
             if (axis) score.double_word_count += 1;
-        else if (type.includes("triple-word"))
+        }
+        else if (type === "triple-word empty") {
             if (axis) score.triple_word_count += 1;
+        }
+
     } else if (tileDiv.className === "placed") {
         if (axis) score.axis_points += tilePoints;
         else score.off_axis_points += tilePoints;
@@ -256,7 +262,7 @@ function tileScore(tileDiv, score, axis = true) {
 function calculateScore() {
     
     const axis_score = {triple_word_count: 0, double_word_count: 0, axis_points: 0, off_axis_points: 0};
-    if (placedLetters.length === 0) return axis_score;
+    if (placedLetters.length === 0) return 0;
 
     const l = placedLetters[0];
     let f = document.querySelector(`div[data-row-id="${parseInt(l.row)}"][data-column-id="${parseInt(l.column)}"]`)
@@ -270,7 +276,7 @@ function calculateScore() {
         else 
             f = document.querySelector(`div[data-row-id="${i}"][data-column-id="${l.column}"]`);
         
-        if (f.className === "selected") {
+        if (f && f.className === "selected") {
             let g = f;
             let j = parseInt(rowPlaced? f.dataset.rowId : f.dataset.columnId);
             let offTiles = 0;
@@ -316,7 +322,7 @@ function calculateScore() {
             f = document.querySelector(`div[data-row-id="${i}"][data-column-id="${l.column}"]`);
         }
 
-        if (f.className === "selected") {
+        if (f && f.className === "selected") {
             let g = f;
             let j = parseInt(rowPlaced? f.dataset.rowId : f.dataset.columnId);
             let offTiles = 0;
@@ -352,9 +358,14 @@ function calculateScore() {
         tileScore(f, axis_score)
         i++;
     }
+    let score;
+    if (axis_score.triple_word_count > 0) {
+        score = axis_score.axis_points*3 + axis_score.off_axis_points;
+    } else if (axis_score.double_word_count > 0) {
+        score = axis_score.axis_points*2 + axis_score.off_axis_points;
+    } else score = axis_score.axis_points + axis_score.off_axis_points;
 
-    
-    console.log(axis_score);
+    return score;
 }
 
 function fillDecks() {
