@@ -207,7 +207,7 @@ input[readonly]{
 
 .table1, .table2{
     flex: 1 33%;
-    margin: auto;
+    margin-top: 10px;
     border: 20px dashed  #D6FFE7;
     border-radius: 30px;
     border-width: medium ;
@@ -216,7 +216,7 @@ input[readonly]{
 
 .stat1btn, .stat2btn {
     flex: 1 5%;
-    margin: auto;
+    margin-top: 10px;
     font-size: 13px;
     border: 3px dashed  #D6FFE7;
     border-radius: 30px;

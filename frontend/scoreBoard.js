@@ -61,3 +61,5 @@ stat2btn.type = 'submit';
 
 
 deck2.append(table2, stat2btn); 
+
+
