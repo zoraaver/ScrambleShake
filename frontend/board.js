@@ -111,7 +111,9 @@ function updateScore() {
 
     if (turnCount%2 === 1) {
         firstScore.innerText = `Your word scores ${score} points`;
-    } else secondScore.innerText = `Your word scores ${score} points`;
+    } else {
+        secondScore.innerText = `Your word scores ${score} points`;
+    }
     
 }
 
@@ -183,6 +185,7 @@ function validMove(tileDiv) {
 }
 
 function placeWord(e) {
+    const score = calculateScore();
     const move = Array.from(document.querySelectorAll("#board .selected"));
     move.forEach(m => m.className = "placed");
     selectedTile = {selected: false, symbol: "", points: 0, id: 0};
@@ -193,6 +196,16 @@ function placeWord(e) {
     const secondScore = document.querySelector("#user-2-points");
     firstScore.innerText = "";
     secondScore.innerText = "";
+    const totalScored = Array.from(document.querySelectorAll("tr"));
+    
+    if (turnCount%2 === 1) {
+        user1.score += score;
+        totalScored[0].innerText = `${player1.name}'s score: ${user1.score} points.`
+    } else {
+        user2.score += score;
+        totalScored[1].innerText = `${player2.name}'s score: ${user2.score} points.`
+    }
+
     fillDecks();
     playTurn();
 }
