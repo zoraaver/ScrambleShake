@@ -18,7 +18,7 @@ html {
   }
 
 .page-font{
-    color: #D6FFE7;
+    color: rgb(147, 165, 154);
 }
 
 .hidden {
@@ -33,6 +33,7 @@ html {
 #sign-in-form{
   display: flex;
   height: 300px;
+  font-family:'Girassol', cursive; 
 }
 
 
@@ -43,16 +44,36 @@ input[type=text] {
     border: 2px dashed  #D6FFE7;
     border-radius: 30px;
     background-color: black;
+    font-family:'Girassol', cursive; 
 }
 
 .ready{
   width: auto;
   font-size: 17px;
   background-color: black;
+  font-family:'Girassol', cursive; 
 }
 
 input[readonly]{
   background-color: rgb(188, 181, 192);
+}
+
+div.game-rules{
+  display: flex;  
+  position: relative;
+
+}
+
+div.game-rules p{
+  font-size: 200%;
+  text-align: center;
+  font-family:'Girassol', cursive; 
+  -webkit-text-fill-color: #CB6D55;
+  -webkit-text-stroke: 1px  rgb(147, 165, 154);
+  position: relative;
+  left: 20%;
+  margin-right: -50%;
+  margin: 0;
 }
 
 #submit-user{
@@ -61,6 +82,7 @@ input[readonly]{
     background-color: black;
     margin-left: 600px;
     margin-top: 60px;
+    font-family:'Girassol', cursive; 
 }
 
 #board {
