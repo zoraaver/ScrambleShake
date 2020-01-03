@@ -57,37 +57,8 @@ function endGame() {
 
     fetch("http://localhost:3000/user_games", secondUserObj)
         .then(resp => resp.json())
-        .then(hideGamePage);
+        .then(console.log);
     location.reload();
-}
-
-function hideGamePage() {
-    const signInForm = document.querySelector("#sign-in-form")
-    const gamePage = document.querySelector("#game-page")
-    const rules = document.querySelector("#ScrambleShake-rules")
-    gamePage.className = "hidden";
-    signInForm.classList.remove("hidden");
-    rules.className = "game-rules";
-
-    let formOne = document.querySelector('#user1-form');
-    let formTwo = document.querySelector('#user2-form');
-
-    let readyOne = formOne.querySelector('#user1ready');
-    let readyTwo = formTwo.querySelector('#user2ready');
-
-    let user1Name = formOne.querySelector('#user1name');
-    let user1Email = formOne.querySelector('#user1email');
-
-    let user2Name = formTwo.querySelector('#user2name');
-    let user2Email = formTwo.querySelector('#user2email');
-
-    readyOne.disabled = false;
-    user1Email.readOnly = false;
-    user1Name.readOnly = false; 
-
-    readyTwo.disabled = false; 
-    user2Email.readOnly = false;
-    user2Name.readOnly = false; 
 }
 
 function startGame(e, user1, user2) {
