@@ -140,6 +140,8 @@ function resetBoard() {
         originalTile.className = letter.class;
         originalTile.innerText = letter.text;
     }
+    rowPlaced = false;
+    columnPlaced = false;
     updateScore();
 }
 
@@ -283,7 +285,7 @@ function placeTile(e) {
     updateScore();
 }
 
-function tileScore(tileDiv, score, axis = true) {
+function tileScore(tileDiv, score, m, axis = true) {
     if (!tileDiv) return;
     const tilePoints = parseInt(tileDiv.innerText.slice(1));
     
@@ -292,7 +294,7 @@ function tileScore(tileDiv, score, axis = true) {
         const type = p.class;
 
         if (axis) score.axis_points += tilePoints;
-        else score.off_axis_points += tilePoints;
+        else score.off_axis_points += tilePoints*m;
 
         if (type === "triple-letter empty"){
             if (axis) score.axis_points += 2*tilePoints;
@@ -311,7 +313,7 @@ function tileScore(tileDiv, score, axis = true) {
 
     } else if (tileDiv.className === "placed") {
         if (axis) score.axis_points += tilePoints;
-        else score.off_axis_points += tilePoints;
+        else score.off_axis_points += tilePoints*m;
     }
 }
 
@@ -336,6 +338,13 @@ function calculateScore() {
             let g = f;
             let j = parseInt(rowPlaced? f.dataset.rowId : f.dataset.columnId);
             let offTiles = 0;
+
+            const temp = placedLetters.find(l => l.row === f.dataset.rowId && l.column === f.dataset.columnId);
+            let m;
+
+            if (temp.class === "triple-word empty") m = 3;
+            else if (temp.class === "double-word empty") m = 2;
+            else m = 1;
             
             while (g && (g.className === "selected" || g.className === "placed")) { 
                 j--;
@@ -343,7 +352,7 @@ function calculateScore() {
                     g = document.querySelector(`div[data-row-id="${i}"][data-column-id="${j}"]`);
                 else 
                     g = document.querySelector(`div[data-row-id="${j}"][data-column-id="${i}"]`);
-                tileScore(g, axis_score, false);
+                tileScore(g, axis_score, m, false);
                 offTiles++;
             }
 
@@ -357,13 +366,13 @@ function calculateScore() {
                 else {
                     g = document.querySelector(`div[data-row-id="${j}"][data-column-id="${i}"]`);
                 }
-                tileScore(g, axis_score, false)
+                tileScore(g, axis_score, m, false)
                 offTiles++;
             }
 
-            if (offTiles > 2) tileScore(f, axis_score, false);
+            if (offTiles > 2) tileScore(f, axis_score, m, false);
         }
-        tileScore(f, axis_score);
+        tileScore(f, axis_score, 1);
         i--;
     }
 
@@ -378,10 +387,18 @@ function calculateScore() {
             f = document.querySelector(`div[data-row-id="${i}"][data-column-id="${l.column}"]`);
         }
 
+
         if (f && f.className === "selected") {
             let g = f;
             let j = parseInt(rowPlaced? f.dataset.rowId : f.dataset.columnId);
             let offTiles = 0;
+
+            const temp = placedLetters.find(l => l.row === f.dataset.rowId && l.column === f.dataset.columnId);
+            let m;
+
+            if (temp.class === "triple-word empty") m = 3;
+            else if (temp.class === "double-word empty") m = 2;
+            else m = 1;
             
             while (g && (g.className === "selected" || g.className === "placed")) { 
                 j--;
@@ -389,7 +406,7 @@ function calculateScore() {
                     g = document.querySelector(`div[data-row-id="${i}"][data-column-id="${j}"]`);
                 else 
                     g = document.querySelector(`div[data-row-id="${j}"][data-column-id="${i}"]`);
-                tileScore(g, axis_score, false);
+                tileScore(g, axis_score, m, false);
                 offTiles++;
             
             }
@@ -404,14 +421,14 @@ function calculateScore() {
                 else {
                     g = document.querySelector(`div[data-row-id="${j}"][data-column-id="${i}"]`);
                 }
-                tileScore(g, axis_score, false)
+                tileScore(g, axis_score, m, false)
                 offTiles++;
 
             }
 
-            if (offTiles > 2) tileScore(f, axis_score, false);
+            if (offTiles > 2) tileScore(f, axis_score, m, false);
         }
-        tileScore(f, axis_score)
+        tileScore(f, axis_score, 1)
         i++;
     }
     let score;
