@@ -116,7 +116,7 @@ function shuffle() {
     const tilesToGoBack = Array.from(deck.children);
 
     tilesToGoBack.forEach(t => {
-        letters.push({symbol: t.innerText.charAt(0), points: parseInt(t.innerText.slice(1))});
+        letters.push({symbol: t.innerHTML[0], points: parseInt(t.innerHTML[7])});
         t.innerText = "";
         t.className = "removed";
     })
