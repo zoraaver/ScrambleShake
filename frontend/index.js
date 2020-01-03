@@ -3,6 +3,7 @@
 let player1 = false;
 let player2 = false;
 document.addEventListener("DOMContentLoaded", (e) => {
+    let gameRule = document.querySelector('#ScrambleShake-rules');
     let formOne = document.querySelector('#user1-form');
     let formTwo = document.querySelector('#user2-form');
 
@@ -60,6 +61,7 @@ document.addEventListener("DOMContentLoaded", (e) => {
                     if (player1 && player2) {
                         const game = document.querySelector('#submit-user');
                         game.classList.remove('hidden');
+                        gameRule.classList.add('hidden');
                     };
                     readyOne.disabled = true;
                     user1Email.readOnly = true;
@@ -93,6 +95,7 @@ document.addEventListener("DOMContentLoaded", (e) => {
                     if (player1 && player2) {
                         const game = document.querySelector('#submit-user');
                         game.classList.remove('hidden');
+                        gameRule.classList.add('hidden');
                     };
                     readyTwo.disabled = true; 
                     user2Email.readOnly = true;
