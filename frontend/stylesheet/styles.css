@@ -224,7 +224,30 @@ div.game-rules p{
 }
 
 .board-column {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
   margin: auto;
+}
+
+.end-game {
+  display: flex;
+  flex: 1 10%;
+  padding: 50px;
+}
+
+#board-container {
+  flex: 1 80%;
+}
+
+#end-game {
+  flex: 1 25%;
+  display: flex;
+  border-radius: 25px;
+  flex-wrap: wrap;
+  opacity: 0.9;
+  font-family: monospace;
 }
 
   

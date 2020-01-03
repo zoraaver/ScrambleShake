@@ -54,7 +54,7 @@ function showStats(player){
     div.id = 'playerStats'; 
     div.classList.add('hidden');
 
-    let gameCount = player.games.length;
+    let gameCount = player.user_games.length;
 
     let totalGame = document.createElement('h3');
     totalGame.innerText = `${player.name} has played ${gameCount} games.`;
@@ -62,7 +62,7 @@ function showStats(player){
 
     let getSum = (memo, current) => memo + current; 
     let scoreAry = ()=>{
-        return player.games.map (game => {
+        return player.user_games.map (game => {
             return game.score;
         })
     };

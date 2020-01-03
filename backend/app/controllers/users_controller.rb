@@ -8,8 +8,7 @@ class UsersController < ApplicationController
         user = User.find(params[:id])
 
         render json: user.to_json(include: {
-            games: {except: [:created_at, :updated_at]},
-            user_games: {only: :winner}
+            user_games: {only: [:winner, :score]}
         }, except: [:created_at, :updated_at])
     end
 
@@ -21,8 +20,7 @@ class UsersController < ApplicationController
             end 
         end
         render json: user.to_json(include: {
-            games: {except: [:created_at, :updated_at]},
-            user_games: {only: :winner}
+            user_games: {only: [:winner, :score]}
         }, except: [:created_at, :updated_at])
     end
    
