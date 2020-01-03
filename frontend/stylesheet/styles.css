@@ -103,24 +103,30 @@ div.game-rules p{
 }
 
 .show-letters {
-  flex: 1 5%;
-  display: flex;
-  border-radius: 25px;
-  flex-wrap: wrap;
   background-color: green;
-  opacity: 0.9;
-  font-family: monospace;
+}
+
+.reset-letters {
+  background-color: orange;
 }
 
 .submit {
+  background-color: blue;
+  color: white;
+}
+
+.shuffle {
+  background-color: purple;
+  color: yellowgreen;
+}
+
+.action {
   flex: 1 5%;
   display: flex;
   border-radius: 25px;
   flex-wrap: wrap;
-  background-color: blue;
-  color: white;
   opacity: 0.9;
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: monospace;
 }
 
 .deck div {
