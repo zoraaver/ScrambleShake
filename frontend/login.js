@@ -7,7 +7,7 @@ document.addEventListener("DOMContentLoaded", () => {
     function startGame(e) {
         e.preventDefault();
         const login = document.querySelector("#sign-in-form");
-        login.remove();
+        login.className = "hidden";
 
         startButton.classList.add("hidden");
         const gamePage = document.querySelector("#game-page");
