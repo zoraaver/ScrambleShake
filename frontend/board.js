@@ -10,9 +10,11 @@ let columnPlaced = false;
 const placedLetters = [];
 let turnCount = 0;
 const showButtons = Array.from(document.querySelectorAll(".show-letters"));
+const resetButtons = Array.from(document.querySelectorAll(".reset-letters"));
 const playWord = Array.from(document.querySelectorAll("button.submit"));
 
 showButtons.forEach((s) => s.addEventListener('click', deckToggle));
+resetButtons.forEach(r => r.addEventListener('click', resetBoard));
 playWord.forEach(b => b.addEventListener('click', placeWord));
 
 function startGame(e, user1, user2) {
@@ -24,7 +26,6 @@ function startGame(e, user1, user2) {
 
 function playTurn() {
     const decks = Array.from(document.querySelectorAll(".deck"));
-    const currentPlayer = turnCount%2 == 0 ? user1 : user2;
     showButtons.forEach(s => s.innerText = "Show Letters");
     decks.forEach(d => d.className = "hidden");
     turnCount ++;
@@ -99,6 +100,26 @@ function drawBoard() {
     }
     document.querySelector('#board-container').append(board);
 } 
+
+function resetBoard() {
+    
+    if (turnCount%2 !== parseInt(this.id.slice(5))) return;
+    for (let i = placedLetters.length - 1; i >= 0; i --) {
+        const letter = placedLetters.splice(i, 1)[0];
+
+        const tile = document.querySelector(`div[data-deck-id="${letter.deck_id}"]`);
+        tile.innerText = letter.symbol;
+        tile.className = "standard-tile";
+        const pSpan = document.createElement("span");
+        pSpan.innerText = letter.points;
+        tile.append(pSpan);
+
+        const originalTile = document.querySelector(`div[data-row-id='${letter.row}'][data-column-id="${letter.column}"]`);
+        originalTile.className = letter.class;
+        originalTile.innerText = letter.text;
+    }
+    updateScore();
+}
 
 function randomLetter(letters) {
     return Math.floor(Math.random() * letters.length);
@@ -185,6 +206,7 @@ function validMove(tileDiv) {
 }
 
 function placeWord(e) {
+    if (turnCount%2 !== parseInt(this.id.slice(4))) return;
     if (placedLetters.length === 0) return;
     const score = calculateScore();
     const move = Array.from(document.querySelectorAll("#board .selected"));
@@ -214,18 +236,6 @@ function placeTile(e) {
     const previouslyPlaced = placedLetters.find(l => l.row == this.dataset.rowId && l.column == this.dataset.columnId);
     
     if (previouslyPlaced) {
-        const deckTile = document.querySelector(`div[data-deck-id="${previouslyPlaced.deck_id}"]`);
-        deckTile.innerText = previouslyPlaced.symbol;
-        const pointsSpan = document.createElement("span");
-        pointsSpan.innerText = previouslyPlaced.points;
-        deckTile.append(pointsSpan)
-        deckTile.className = "standard-tile";
-        this.className = previouslyPlaced.class;
-        this.innerText = previouslyPlaced.text;
-        placedLetters.splice(placedLetters.findIndex(e => e == previouslyPlaced), 1);
-        selectedTile = {selected: false, symbol: "", points: 0, id: 0};
-        if (placedLetters.length <= 1) [rowPlaced, columnPlaced] = [false, false];
-        updateScore();
         return;
     }
 

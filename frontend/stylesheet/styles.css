@@ -90,6 +90,16 @@ input[readonly]{
   font-family: monospace;
 }
 
+.reset-letters {
+  flex: 1 5%;
+  display: flex;
+  border-radius: 25px;
+  flex-wrap: wrap;
+  background-color: orange;
+  opacity: 0.9;
+  font-family: monospace;
+}
+
 .submit {
   flex: 1 5%;
   display: flex;
