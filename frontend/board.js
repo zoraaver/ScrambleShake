@@ -11,11 +11,13 @@ const placedLetters = [];
 let turnCount = 0;
 const showButtons = Array.from(document.querySelectorAll(".show-letters"));
 const resetButtons = Array.from(document.querySelectorAll(".reset-letters"));
+const shuffleButtons = Array.from(document.querySelectorAll(".shuffle"));
 const playWord = Array.from(document.querySelectorAll("button.submit"));
 
 showButtons.forEach((s) => s.addEventListener('click', deckToggle));
 resetButtons.forEach(r => r.addEventListener('click', resetBoard));
 playWord.forEach(b => b.addEventListener('click', placeWord));
+shuffleButtons.forEach(s => s.addEventListener('click', shuffle));
 
 function startGame(e, user1, user2) {
     letters = createLetterBag();
@@ -27,7 +29,12 @@ function startGame(e, user1, user2) {
 function playTurn() {
     const decks = Array.from(document.querySelectorAll(".deck"));
     showButtons.forEach(s => s.innerText = "Show Letters");
+    fillDecks();
     decks.forEach(d => d.className = "hidden");
+    const firstScore = document.querySelector("#user-1-points");
+    const secondScore = document.querySelector("#user-2-points");
+    firstScore.innerText = "";
+    secondScore.innerText = "";
     turnCount ++;
 }
 
@@ -100,6 +107,21 @@ function drawBoard() {
     }
     document.querySelector('#board-container').append(board);
 } 
+
+function shuffle() {
+    if (turnCount === 1) return;
+    if (parseInt(this.id.slice(7)) !== turnCount%2) return;
+    resetBoard.call(this.nextElementSibling);
+    const deck = turnCount%2 == 1? document.querySelector("div#user1-deck") : document.querySelector("div#user2-deck");
+    const tilesToGoBack = Array.from(deck.children);
+
+    tilesToGoBack.forEach(t => {
+        letters.push({symbol: t.innerText.charAt(0), points: parseInt(t.innerText.slice(1))});
+        t.innerText = "";
+        t.className = "removed";
+    })
+    playTurn();
+}
 
 function resetBoard() {
     
@@ -215,10 +237,6 @@ function placeWord(e) {
     rowPlaced = false;
     columnPlaced = false;
     placedLetters.length = 0;
-    const firstScore = document.querySelector("#user-1-points");
-    const secondScore = document.querySelector("#user-2-points");
-    firstScore.innerText = "";
-    secondScore.innerText = "";
     const totalScored = Array.from(document.querySelectorAll("tr"));
     
     if (turnCount%2 === 1) {
@@ -229,7 +247,6 @@ function placeWord(e) {
         totalScored[1].innerText = `${player2.name}'s score: ${user2.score} points.`
     }
 
-    fillDecks();
     playTurn();
 }
 function placeTile(e) {
@@ -416,7 +433,7 @@ function fillDecks() {
         const pointSpan = document.createElement("span");
         pointSpan.innerText = letter.points;
         
-        tile.innerText = letter.sybmol;
+        tile.innerText = letter.symbol;
         tile.classList.add("standard-tile");
         tile.classList.remove("removed");
         tile.append(pointSpan);
@@ -434,7 +451,7 @@ function drawDecks(letters) {
             pointSpan.innerText = letter.points;
 
             const tile = document.createElement('div');
-            tile.innerText = letter.sybmol;
+            tile.innerText = letter.symbol;
             tile.dataset.deckId = i + index*7 + 1;
             tile.append(pointSpan);
             tile.classList.add("standard-tile");
@@ -470,106 +487,106 @@ function selectTile(e) {
 function createLetterBag() {
     const letters = [
         
-        {sybmol: "A", points: 1},
-        {sybmol: "A", points: 1},
-        {sybmol: "A", points: 1},
-        {sybmol: "A", points: 1},
-        {sybmol: "A", points: 1},
-        {sybmol: "A", points: 1},
-        {sybmol: "A", points: 1},
-        {sybmol: "A", points: 1},
-        {sybmol: "A", points: 1},
-        {sybmol: "B", points: 3},
-        {sybmol: "B", points: 3},
-        {sybmol: "C", points: 3},
-        {sybmol: "C", points: 3},
-        {sybmol: "D", points: 2},
-        {sybmol: "D", points: 2},
-        {sybmol: "D", points: 2},
-        {sybmol: "D", points: 2},
-        {sybmol: "E", points: 1},
-        {sybmol: "E", points: 1},
-        {sybmol: "E", points: 1},
-        {sybmol: "E", points: 1},
-        {sybmol: "E", points: 1},
-        {sybmol: "E", points: 1},
-        {sybmol: "E", points: 1},
-        {sybmol: "E", points: 1},
-        {sybmol: "E", points: 1},
-        {sybmol: "E", points: 1},
-        {sybmol: "E", points: 1},
-        {sybmol: "E", points: 1},
-        {sybmol: "F", points: 4},
-        {sybmol: "F", points: 4},
-        {sybmol: "G", points: 2},
-        {sybmol: "G", points: 2},
-        {sybmol: "G", points: 2},
-        {sybmol: "H", points: 4},
-        {sybmol: "H", points: 4},
-        {sybmol: "I", points: 1},
-        {sybmol: "I", points: 1},
-        {sybmol: "I", points: 1},
-        {sybmol: "I", points: 1},
-        {sybmol: "I", points: 1},
-        {sybmol: "I", points: 1},
-        {sybmol: "I", points: 1},
-        {sybmol: "I", points: 1},
-        {sybmol: "I", points: 1},
-        {sybmol: "J", points: 8},
-        {sybmol: "K", points: 5},
-        {sybmol: "L", points: 1},
-        {sybmol: "L", points: 1},
-        {sybmol: "L", points: 1},
-        {sybmol: "L", points: 1},
-        {sybmol: "M", points: 3},
-        {sybmol: "M", points: 3},
-        {sybmol: "N", points: 1},
-        {sybmol: "N", points: 1},
-        {sybmol: "N", points: 1},
-        {sybmol: "N", points: 1},
-        {sybmol: "N", points: 1},
-        {sybmol: "N", points: 1},
-        {sybmol: "O", points: 1},
-        {sybmol: "O", points: 1},
-        {sybmol: "O", points: 1},
-        {sybmol: "O", points: 1},
-        {sybmol: "O", points: 1},
-        {sybmol: "O", points: 1},
-        {sybmol: "O", points: 1},
-        {sybmol: "O", points: 1},
-        {sybmol: "P", points: 3},
-        {sybmol: "P", points: 3},
-        {sybmol: "Q", points: 10},
-        {sybmol: "R", points: 1},
-        {sybmol: "R", points: 1},
-        {sybmol: "R", points: 1},
-        {sybmol: "R", points: 1},
-        {sybmol: "R", points: 1},
-        {sybmol: "R", points: 1},
-        {sybmol: "S", points: 1},
-        {sybmol: "S", points: 1},
-        {sybmol: "S", points: 1},
-        {sybmol: "S", points: 1},
-        {sybmol: "T", points: 1},
-        {sybmol: "T", points: 1},
-        {sybmol: "T", points: 1},
-        {sybmol: "T", points: 1},
-        {sybmol: "T", points: 1},
-        {sybmol: "T", points: 1},
-        {sybmol: "U", points: 1},
-        {sybmol: "U", points: 1},
-        {sybmol: "U", points: 1},
-        {sybmol: "U", points: 1},
-        {sybmol: "V", points: 4},
-        {sybmol: "V", points: 4},
-        {sybmol: "W", points: 4},
-        {sybmol: "W", points: 4},
-        {sybmol: "X", points: 8},
-        {sybmol: "Y", points: 4},
-        {sybmol: "Y", points: 4},
-        {sybmol: "Z", points: 10},
-        {sybmol: "*", points: 0},
-        {sybmol: "*", points: 0}
+        {symbol: "A", points: 1},
+        {symbol: "A", points: 1},
+        {symbol: "A", points: 1},
+        {symbol: "A", points: 1},
+        {symbol: "A", points: 1},
+        {symbol: "A", points: 1},
+        {symbol: "A", points: 1},
+        {symbol: "A", points: 1},
+        {symbol: "A", points: 1},
+        {symbol: "B", points: 3},
+        {symbol: "B", points: 3},
+        {symbol: "C", points: 3},
+        {symbol: "C", points: 3},
+        {symbol: "D", points: 2},
+        {symbol: "D", points: 2},
+        {symbol: "D", points: 2},
+        {symbol: "D", points: 2},
+        {symbol: "E", points: 1},
+        {symbol: "E", points: 1},
+        {symbol: "E", points: 1},
+        {symbol: "E", points: 1},
+        {symbol: "E", points: 1},
+        {symbol: "E", points: 1},
+        {symbol: "E", points: 1},
+        {symbol: "E", points: 1},
+        {symbol: "E", points: 1},
+        {symbol: "E", points: 1},
+        {symbol: "E", points: 1},
+        {symbol: "E", points: 1},
+        {symbol: "F", points: 4},
+        {symbol: "F", points: 4},
+        {symbol: "G", points: 2},
+        {symbol: "G", points: 2},
+        {symbol: "G", points: 2},
+        {symbol: "H", points: 4},
+        {symbol: "H", points: 4},
+        {symbol: "I", points: 1},
+        {symbol: "I", points: 1},
+        {symbol: "I", points: 1},
+        {symbol: "I", points: 1},
+        {symbol: "I", points: 1},
+        {symbol: "I", points: 1},
+        {symbol: "I", points: 1},
+        {symbol: "I", points: 1},
+        {symbol: "I", points: 1},
+        {symbol: "J", points: 8},
+        {symbol: "K", points: 5},
+        {symbol: "L", points: 1},
+        {symbol: "L", points: 1},
+        {symbol: "L", points: 1},
+        {symbol: "L", points: 1},
+        {symbol: "M", points: 3},
+        {symbol: "M", points: 3},
+        {symbol: "N", points: 1},
+        {symbol: "N", points: 1},
+        {symbol: "N", points: 1},
+        {symbol: "N", points: 1},
+        {symbol: "N", points: 1},
+        {symbol: "N", points: 1},
+        {symbol: "O", points: 1},
+        {symbol: "O", points: 1},
+        {symbol: "O", points: 1},
+        {symbol: "O", points: 1},
+        {symbol: "O", points: 1},
+        {symbol: "O", points: 1},
+        {symbol: "O", points: 1},
+        {symbol: "O", points: 1},
+        {symbol: "P", points: 3},
+        {symbol: "P", points: 3},
+        {symbol: "Q", points: 10},
+        {symbol: "R", points: 1},
+        {symbol: "R", points: 1},
+        {symbol: "R", points: 1},
+        {symbol: "R", points: 1},
+        {symbol: "R", points: 1},
+        {symbol: "R", points: 1},
+        {symbol: "S", points: 1},
+        {symbol: "S", points: 1},
+        {symbol: "S", points: 1},
+        {symbol: "S", points: 1},
+        {symbol: "T", points: 1},
+        {symbol: "T", points: 1},
+        {symbol: "T", points: 1},
+        {symbol: "T", points: 1},
+        {symbol: "T", points: 1},
+        {symbol: "T", points: 1},
+        {symbol: "U", points: 1},
+        {symbol: "U", points: 1},
+        {symbol: "U", points: 1},
+        {symbol: "U", points: 1},
+        {symbol: "V", points: 4},
+        {symbol: "V", points: 4},
+        {symbol: "W", points: 4},
+        {symbol: "W", points: 4},
+        {symbol: "X", points: 8},
+        {symbol: "Y", points: 4},
+        {symbol: "Y", points: 4},
+        {symbol: "Z", points: 10},
+        {symbol: "*", points: 0},
+        {symbol: "*", points: 0}
         
     ];
     return letters;
