@@ -2,8 +2,8 @@ document.addEventListener("DOMContentLoaded", (e) => {
     startGame(e, user1, user2)
 });
 
-const user1 = {name: "John", score: 0};
-const user2 = {name: "Michael", score: 0};
+const user1 = {score: 0};
+const user2 = {score: 0};
 let selectedTile = {selected: false, symbol: "", points: 0, id: 0};
 let rowPlaced = false;
 let columnPlaced = false;
@@ -13,14 +13,57 @@ const showButtons = Array.from(document.querySelectorAll(".show-letters"));
 const resetButtons = Array.from(document.querySelectorAll(".reset-letters"));
 const shuffleButtons = Array.from(document.querySelectorAll(".shuffle"));
 const playWord = Array.from(document.querySelectorAll("button.submit"));
+const endButton = document.querySelector("#end-game");
 
 showButtons.forEach((s) => s.addEventListener('click', deckToggle));
 resetButtons.forEach(r => r.addEventListener('click', resetBoard));
 playWord.forEach(b => b.addEventListener('click', placeWord));
 shuffleButtons.forEach(s => s.addEventListener('click', shuffle));
+endButton.addEventListener('click', endGame);
+
+
+function endGame() {
+    const firstUserObj = {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json",
+            "Accept": "application/json"
+        },
+        body: JSON.stringify({
+            user_id: player1.id,
+            score: user1.score,
+            winner: user1.score > user2.score
+        })
+    };
+
+    const secondUserObj = {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json",
+            "Accept": "application/json"
+        },
+        body: JSON.stringify({
+            user_id: player2.id,
+            score: user2.score,
+            winner: user2.score > user1.score
+        })
+    };
+
+    
+    fetch("http://localhost:3000/user_games", firstUserObj)
+        .then(resp => resp.json())
+        .then(console.log);
+
+
+    fetch("http://localhost:3000/user_games", secondUserObj)
+        .then(resp => resp.json())
+        .then(console.log);
+    location.reload();
+}
 
 function startGame(e, user1, user2) {
     letters = createLetterBag();
+    placedLetters.length = 0;
     drawBoard();
     drawDecks(letters);
     playTurn();
@@ -39,9 +82,11 @@ function playTurn() {
 }
 
 function drawBoard() {
+    const boardExists = document.querySelector("div#board");
+    if (boardExists) return;
     const board = document.createElement('div');
     board.id = "board";
-    
+    board.innerHTML = "";
     for(let i = 0; i < 225; i++) {
         const tile = document.createElement('div');
 
@@ -254,10 +299,8 @@ function placeWord(e) {
 function placeTile(e) {
     const previouslyPlaced = placedLetters.find(l => l.row == this.dataset.rowId && l.column == this.dataset.columnId);
     
-    if (previouslyPlaced) {
-        return;
-    }
-
+    if (previouslyPlaced) return;
+    if (this.className === "placed") return;
     if (!selectedTile.selected) return;
     if (!validMove(this)) return;
     
