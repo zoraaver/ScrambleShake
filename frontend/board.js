@@ -50,12 +50,12 @@ function endGame() {
     };
 
     
-    fetch("http://localhost:3000/user_games", firstUserObj)
+    fetch("http://ffbetatest.herokuapp.com/user_games", firstUserObj)
         .then(resp => resp.json())
         .then(console.log);
 
 
-    fetch("http://localhost:3000/user_games", secondUserObj)
+    fetch("http://ffbetatest.herokuapp.com/user_games", secondUserObj)
         .then(resp => resp.json())
         .then(console.log);
     location.reload();

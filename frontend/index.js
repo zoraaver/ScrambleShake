@@ -54,7 +54,7 @@ document.addEventListener("DOMContentLoaded", (e) => {
 
         if (validateForm(user1Name, user1Email)){
             if (validateEmail(user1Email)){
-                fetch('http://localhost:3000/users', configObj)
+                fetch('http://ffbetatest.herokuapp.com/users', configObj)
                 .then(response => response.json())
                 .then(obj => {
                     player1 = obj;
@@ -88,7 +88,7 @@ document.addEventListener("DOMContentLoaded", (e) => {
 
         if (validateForm (user2Name, user2Email)){
             if (validateEmail (user2Email)){
-                fetch('http://localhost:3000/users', configObj)
+                fetch('http://ffbetatest.herokuapp.com/users', configObj)
                 .then(response => response.json())
                 .then(obj => {
                     player2 = obj;
